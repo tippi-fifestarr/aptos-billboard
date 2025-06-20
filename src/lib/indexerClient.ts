@@ -30,8 +30,8 @@ export class BillboardIndexerClient {
         'Content-Type': 'application/json',
       };
 
-      // Use API key for public endpoint access
-      const apiKey = process.env.NEXT_PUBLIC_APTOS_API_KEY;
+      // Use specific indexer API key for public endpoint access
+      const apiKey = process.env.NEXT_PUBLIC_INDEXER_API_KEY || process.env.NEXT_PUBLIC_APTOS_API_KEY;
       if (apiKey) {
         headers['Authorization'] = `Bearer ${apiKey}`;
       }
