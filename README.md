@@ -2,60 +2,71 @@
 
 > **Drive the blockchain highway and post your messages on digital billboards!**
 
-A real-time blockchain messaging application that demonstrates the power of Aptos Build's No-Code Indexer, combining intuitive highway metaphors with cutting-edge Web3 technology.
+A production-ready blockchain messaging application showcasing the complete Aptos ecosystem: No-Code Indexer for real-time data, Gas Station for sponsored transactions, and Aptos Connect for social login - all wrapped in an intuitive highway-themed interface.
 
 ![Highway Billboard Preview](./screenshot.png)
 
 ## 🎯 Project Mission
 
-This project serves as a comprehensive demonstration and testing ground for three core Aptos features:
-- **📊 No-Code Indexer** - Real-time blockchain data processing
-- **⛽ Gas Station** - Transaction sponsoring for seamless UX  
-- **🔐 Aptos Connect** - Social login integration
+This project serves as a comprehensive demonstration of the full Aptos Build ecosystem:
+- **📊 No-Code Indexer** - Real-time blockchain data processing with GraphQL
+- **⛽ Gas Station** - Zero-fee transactions for seamless user onboarding  
+- **🔐 Aptos Connect** - Social login integration (Google OAuth)
+- **🎨 Beautiful UX** - Highway metaphors make Web3 accessible to mainstream users
 
-Built for DevDocs.work as part of Aptos client engagement to improve developer experience and provide real-world feedback on Aptos Build tools.
+Built for DevDocs.work as part of Aptos client engagement to showcase production-ready developer tools and gather real-world feedback.
 
 ## ✨ Features
 
-### Current Implementation
-- **🎨 Highway-Themed UI** - Beautiful, intuitive interface using highway metaphors
+### 🚀 Production Ready (Phase 2 Complete)
+- **🎨 Highway-Themed UI** - Gorgeous interface using intuitive highway metaphors
 - **📱 Real-Time Data** - Live billboard updates via Aptos No-Code Indexer
-- **🚗 Mile Markers** - Messages displayed as highway mile markers
-- **⭐ Featured Billboard** - Prominent display of recent messages
-- **📍 Community Engagement** - Multi-user message posting
+- **⛽ Gas Station Integration** - Sponsored transactions for Petra wallet users
+- **🔑 Social Login** - Google OAuth via Aptos Connect for seamless onboarding
+- **💰 Dual Payment System** - Petra gets free transactions, social login users pay normal fees
+- **🚗 Interactive Gas Gauge** - Real balance display with connect buttons
+- **📍 Highway Rest Stop** - Fully functional gas station for wallet connections
+- **⭐ Auto-Refresh UX** - Seamless message posting with instant updates
+- **🧪 Comprehensive Testing** - Built-in test pages for all functionality
 
-### Planned Features
-- **⛽ Gas Station Integration** - Sponsored transactions for new users
-- **🔑 Social Login** - Google OAuth via Aptos Connect
-- **💰 Premium Billboards** - Pay APT for featured placement
-- **⏰ Time-Based Ads** - Billboard rental system
+### 🎯 Highway Metaphor System
+| Blockchain Concept | Highway Metaphor | UI Element |
+|-------------------|------------------|------------|
+| Account Balance | Gas Tank Level | ⛽ Interactive Gas Gauge |
+| Wallet Connection | Gas Station Visit | 🏪 Highway Rest Stop |
+| Transaction Fee | Fuel Cost | 💰 Payment Method Display |
+| Message Posting | Billboard Rental | 📋 Billboard Posting Form |
+| Browsing Messages | Driving Highway | 🛣️ Mile Marker Messages |
+| Sponsored Transactions | Free Gas | 🎁 Gas Station Sponsorship |
 
 ## 🏗️ Technical Architecture
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   React Frontend │    │  Aptos Blockchain │    │  No-Code Indexer │
+│  React Frontend │    │ Aptos Blockchain │    │ No-Code Indexer │
 │                 │    │                  │    │                 │
-│  Highway UI     │◄──►│  Billboard       │────►│  Real-time      │
-│  Components     │    │  Smart Contract  │    │  Data Processing│
-│                 │    │                  │    │                 │
+│  Highway UI     │◄──►│  Billboard       │───►│  Real-time      │
+│  + Wallet       │    │  Smart Contract  │    │  GraphQL API    │
+│  + Gas Station  │    │  + Gas Station   │    │                 │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
 
 ### Smart Contract
 - **Language**: Move
 - **Network**: Aptos Testnet
-- **Contract**: `billboard::billboard`
+- **Address**: `0x24051bca580d28e80a340a17f87c99def0cc0bde05f9f9d88e8eebdfad1cfb03::billboard`
 - **Key Functions**:
   - `initialize_billboard` - Create new billboard
-  - `send_message` - Post message to billboard
+  - `send_message` - Post message to billboard (Gas Station compatible)
   - `get_all_messages` - Retrieve all messages
 
 ### Frontend Stack
 - **Framework**: Next.js 15 with React 18
-- **Styling**: Tailwind CSS
-- **Blockchain**: Aptos TypeScript SDK
+- **Styling**: Tailwind CSS with highway color scheme
+- **Blockchain**: Aptos TypeScript SDK v1.39.0 (wallet adapter compatible)
+- **Wallet Integration**: @aptos-labs/wallet-adapter-react
 - **Real-time Data**: GraphQL via No-Code Indexer
+- **Gas Station**: @aptos-labs/gas-station-client
 - **Dev Tools**: Turbopack for fast development
 
 ## 🚀 Quick Start
@@ -69,20 +80,19 @@ Built for DevDocs.work as part of Aptos client engagement to improve developer e
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-repo/highway-billboard
-   cd highway-billboard
+   git clone https://github.com/tippi-fifestarr/highway-billboard
+   cd highway-billboard/billboard-frontend
    ```
 
 2. **Install dependencies**
    ```bash
-   cd billboard-frontend
    npm install
    ```
 
 3. **Set up environment variables**
    ```bash
    cp .env.example .env.local
-   # Add your indexer API URL and admin secret
+   # Edit .env.local with your API keys (see setup instructions below)
    ```
 
 4. **Start development server**
@@ -115,109 +125,231 @@ Built for DevDocs.work as part of Aptos client engagement to improve developer e
    aptos move run --function-id default::billboard::send_message --args address:default string:"Hello Highway!"
    ```
 
-## 📊 No-Code Indexer Setup
 
-Our implementation showcases Aptos Build's No-Code Indexer for real-time data processing:
+## 🔧 Environment Setup
 
-### Configuration
+### Required API Keys
+
+You need **two separate API keys** from [Aptos Build](https://build.aptoslabs.com):
+
+1. **Indexer API Key** - For real-time data (GraphQL)
+2. **Gas Station API Key** - For transaction sponsorship
+
+### Step-by-Step Configuration
+
+1. **Create Indexer Project**
+   - Go to [Aptos Build](https://build.aptoslabs.com)
+   - Create a new "No-Code Indexer" project
+   - Configure it to index your billboard contract events
+   - Copy the GraphQL endpoint URL and API key
+
+2. **Create Gas Station Project**
+   - Create a new "Gas Station" configuration
+   - Set network to **TESTNET** (required)
+   - Whitelist contract function: `send_message`
+   - Copy the API key
+
+3. **Update .env.local**
+   ```env
+   # Indexer Configuration
+   NEXT_PUBLIC_INDEXER_API_URL=https://api.testnet.aptoslabs.com/nocode/v1/api/YOUR_ID/v1/graphql
+   NEXT_PUBLIC_INDEXER_API_KEY=aptoslabs_YOUR_INDEXER_KEY
+
+   # Gas Station Configuration
+   NEXT_PUBLIC_GAS_STATION_API_KEY=aptoslabs_YOUR_GAS_STATION_KEY
+   ```
+
+## 🧪 Testing & Verification
+
+The project includes comprehensive testing infrastructure:
+
+### Built-in Test Pages
+- **`/test-indexer`** - Verify real-time data functionality
+- **`/test-wallet`** - Test wallet connections and transactions
+- **`/test-integration`** - Complete end-to-end testing
+
+### Testing Workflow
+1. Start with `/test-indexer` to verify data flow
+2. Use `/test-wallet` to test wallet functionality
+3. Run `/test-integration` for full system verification
+4. Test main app at `/` for production experience
+
+## 🚀 Vercel Deployment
+
+### Environment Variables for Production
+
+In your Vercel dashboard, add these environment variables:
+
+```env
+NEXT_PUBLIC_INDEXER_API_URL=https://api.testnet.aptoslabs.com/nocode/v1/api/YOUR_ID/v1/graphql
+NEXT_PUBLIC_INDEXER_API_KEY=aptoslabs_YOUR_INDEXER_KEY
+NEXT_PUBLIC_GAS_STATION_API_KEY=aptoslabs_YOUR_GAS_STATION_KEY
+```
+
+### Deployment Steps
+
+1. **Connect Repository**
+   ```bash
+   # Push to GitHub
+   git add .
+   git commit -m "Ready for production deployment"
+   git push origin main
+   ```
+
+2. **Deploy to Vercel**
+   - Connect your GitHub repository to Vercel
+   - Set environment variables in Vercel dashboard
+   - Deploy automatically on push
+
+3. **Verify Deployment**
+   - Test wallet connections work on production domain
+   - Verify real-time data updates
+   - Test both Petra and social login flows
+
+### Production Considerations
+
+- **Network**: Ensure all components use Testnet
+- **CORS**: Aptos Build APIs are configured for frontend use
+- **Performance**: Next.js optimizations included for fast loading
+- **Error Handling**: Comprehensive error boundaries implemented
+
+## 📊 No-Code Indexer Integration
+
+### Real-time Data Flow
+```
+Smart Contract Event → Indexer Processing → GraphQL API → React UI
+```
+
+### Configuration Details
 - **Event Source**: `MessageAdded` events from billboard contract
 - **Database Schema**: 
   - `author_address` (blockchain address)
   - `time` (timestamp in microseconds)
   - `message` (billboard content)
-- **API Type**: GraphQL with Hasura admin interface
+- **API Type**: GraphQL with automatic schema generation
 
-### Key Learnings
-✅ **When it works**: Provides excellent real-time data updates  
-⚠️ **Setup complexity**: Requires technical debugging for authentication  
-📚 **Documentation gaps**: Auth methods need clearer explanation  
+### Key Benefits
+✅ **Real-time Updates**: Instant message display without polling  
+✅ **Type Safety**: Generated TypeScript types from GraphQL schema  
+✅ **Scalability**: Handles high-frequency blockchain events  
+✅ **Developer Experience**: GraphQL playground for testing queries
 
-*See detailed feedback in our [Developer Experience Report](./docs/developer-experience.md)*
+## ⛽ Gas Station Integration
 
-## 🎨 Highway Metaphor Design
-
-Our UI transforms blockchain concepts into familiar highway experiences:
-
-| Blockchain Concept | Highway Metaphor | UI Element |
-|-------------------|------------------|------------|
-| Account Balance | Gas Tank | ⛽ Gas Gauge |
-| Transaction Fee | Fuel Cost | Gas Price Display |
-| Message Posting | Billboard Rental | Featured Billboard |
-| Browsing Messages | Driving Highway | Mile Markers |
-| Wallet Connection | Gas Station | Connect Button |
-
-## 🔧 Configuration
-
-### Environment Variables
-
-```env
-# Indexer Configuration
-NEXT_PUBLIC_INDEXER_API_URL=https://api.testnet.aptoslabs.com/nocode/v1/manage/your-id/v1/graphql
-NEXT_PUBLIC_HASURA_ADMIN_SECRET=your-admin-secret
-
-# Contract Configuration  
-NEXT_PUBLIC_CONTRACT_ADDRESS=0x24051bca580d28e80a340a17f87c99def0cc0bde05f9f9d88e8eebdfad1cfb03
-NEXT_PUBLIC_NETWORK=testnet
+### Sponsored Transaction Flow
+```
+User Action → Wallet Detection → Gas Station API → Sponsored Transaction
 ```
 
-### Key Files Structure
+### Implementation Details
+- **Petra Wallet**: Automatic sponsorship for all transactions
+- **Social Login**: Normal transactions (user pays gas fees)
+- **Rate Limiting**: Built-in protection against abuse
+- **Error Handling**: Graceful fallback to normal transactions
 
-```
-highway-billboard/
-├── billboard-contract/          # Move smart contract
-│   ├── sources/billboard.move   # Main contract logic
-│   └── Move.toml               # Contract configuration
-├── billboard-frontend/          # React application
-│   ├── src/
-│   │   ├── components/Highway/  # Highway-themed components
-│   │   ├── lib/
-│   │   │   ├── billboardService.ts    # Blockchain interaction
-│   │   │   └── indexerClient.ts       # Real-time data client
-│   │   └── app/page.tsx         # Main highway interface
-│   └── tailwind.config.js       # Styling configuration
-└── docs/                        # Documentation
-```
+### Benefits for Users
+- **Zero Friction**: Petra users post messages for free
+- **Instant Onboarding**: No need to acquire test APT
+- **Familiar UX**: Gas station metaphor makes sponsorship intuitive
+
+## 🔐 Wallet Integration
+
+### Supported Wallets
+- **Petra Wallet** - Full gas station sponsorship support
+- **Aptos Connect** - Social login with Google OAuth
+- **Other Wallets** - Standard Aptos wallet adapter support
+
+### Auto-Detection System
+The app automatically detects wallet type and adjusts payment flow:
+- Petra → Sponsored transactions via Gas Station
+- Social Login → Normal transactions with clear fee display
+- Other Wallets → Standard transaction flow
 
 ## 📈 Live Data & Analytics
 
-**Active Billboard Stats**:
-- 🎯 **8 Messages Posted** across multiple users
-- 👥 **2 Active Users** engaging with the platform  
-- ⚡ **Real-time Updates** via indexer processing
-- 🏆 **Featured**: "Hooty from tippi onchain"
+**Production Stats**:
+- 🎯 **Real-time Message Processing** via No-Code Indexer
+- ⛽ **Gas Station Sponsorship** for seamless UX
+- 👥 **Multi-wallet Support** (Petra + Social Login)
+- 🏆 **Production Ready** with comprehensive testing
 
-**Community Messages**:
-- "is it free?" 
-- "finale?"
-- "freeee"
-- "good day"
-- "hooooooty"
+## 🛣️ Project Phases
 
-## 🛣️ Roadmap
-
-### Phase 1: Core Functionality ✅
+### ✅ Phase 1: Foundation (Complete)
 - [x] Smart contract deployment
 - [x] No-code indexer integration  
 - [x] Highway-themed frontend
 - [x] Real-time message display
 
-### Phase 2: Enhanced UX (In Progress)
-- [ ] Aptos Connect social login
-- [ ] Gas Station transaction sponsoring
-- [ ] Wallet connection interface
-- [ ] Message posting via frontend
+### ✅ Phase 2: Full Integration (Complete)
+- [x] Wallet adapter integration
+- [x] Gas Station transaction sponsoring
+- [x] Aptos Connect social login
+- [x] Dual payment system implementation
+- [x] Interactive gas gauge with connect buttons
+- [x] Auto-refresh UX for seamless posting
+- [x] Comprehensive testing infrastructure
 
-### Phase 3: Premium Features
-- [ ] APT payment for featured placement
-- [ ] Time-based billboard rentals
-- [ ] Message categories and filtering
-- [ ] Advanced highway analytics
+### 🎯 Phase 3: Optional Enhancements
+- [ ] Message reactions and threading
+- [ ] User profiles and avatars
+- [ ] Advanced search and filtering
+- [ ] Analytics dashboard
+- [ ] 3D highway visualization
+- [ ] Weather effects and day/night cycle
 
-### Phase 4: Production Ready
-- [ ] Mainnet deployment
-- [ ] Performance optimization  
-- [ ] Advanced error handling
-- [ ] Comprehensive testing suite
+## 🔧 Key Files Structure
+
+```
+billboard-frontend/
+├── src/
+│   ├── components/
+│   │   ├── Highway/HighwayBillboard.tsx    # Main component with full integration
+│   │   └── providers/WalletProvider.tsx    # Wallet context and configuration
+│   ├── hooks/
+│   │   └── useWallet.ts                    # Wallet state management
+│   ├── services/
+│   │   └── gasStation.ts                   # Transaction sponsorship logic
+│   ├── lib/
+│   │   ├── indexerClient.ts                # Real-time data client
+│   │   └── billboardService.ts             # Blockchain interaction
+│   ├── types/
+│   │   └── index.ts                        # TypeScript definitions
+│   ├── utils/
+│   │   └── constants.ts                    # Configuration and theme
+│   └── app/
+│       ├── page.tsx                        # Main highway interface
+│       ├── test-indexer/page.tsx           # Indexer testing
+│       ├── test-wallet/page.tsx            # Wallet testing
+│       └── test-integration/page.tsx       # Full integration testing
+├── .env.example                            # Environment setup guide
+└── package.json                            # Dependencies and scripts
+```
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Wallet Connection Issues**
+- Ensure you're on Testnet network
+- Check browser console for detailed error messages
+- Verify API keys are correctly formatted
+
+**Gas Station Not Working**
+- Confirm Gas Station API key is valid
+- Ensure contract function is whitelisted
+- Check network is set to Testnet (required)
+
+**Real-time Data Issues**
+- Verify Indexer API URL and key
+- Check GraphQL endpoint accessibility
+- Ensure contract events are being indexed
+
+### Debug Tools
+- Use `/test-indexer` to isolate data issues
+- Use `/test-wallet` to debug wallet connections
+- Check browser console for detailed error logs
+- Verify environment variables are loaded correctly
 
 ## 🤝 Contributing
 
@@ -226,43 +358,32 @@ We welcome contributions that improve the developer experience and showcase Apto
 ### Development Setup
 1. Fork the repository
 2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Make changes and test thoroughly
+3. Make changes and test thoroughly using built-in test pages
 4. Submit pull request with detailed description
 
 ### Feedback Areas
-- **No-Code Indexer UX** improvements
-- **Highway UI/UX** enhancements  
-- **Gas Station** integration examples
-- **Documentation** improvements
+- **Gas Station UX** improvements and edge cases
+- **Highway UI/UX** enhancements and accessibility  
+- **Wallet Integration** additional wallet support
+- **Documentation** improvements and tutorials
 
 ## 📖 Documentation
 
-- [Developer Experience Report](./docs/developer-experience.md) - Detailed setup journey and feedback
-- [Smart Contract Guide](./docs/smart-contract.md) - Move development details
-- [Frontend Architecture](./docs/frontend-architecture.md) - React implementation guide
-- [Indexer Integration](./docs/indexer-setup.md) - No-code indexer configuration
-
-## 🐛 Known Issues & Workarounds
-
-### Authentication Setup
-- **Issue**: No-code indexer requires manual endpoint discovery
-- **Workaround**: Use `/manage/` endpoint with `x-hasura-admin-secret` header
-- **Status**: Reported to Aptos team for documentation improvement
-
-### Table Tracking
-- **Issue**: Database tables not automatically exposed in GraphQL
-- **Workaround**: Manually click "Track" in Hasura console
-- **Status**: Expected behavior, needs better user guidance
+- [Environment Setup Guide](./.env.example) - Complete configuration instructions
+- [Integration Plan](./integration-plan.md) - Technical implementation details for merging in the features from the [terrible UI version of this](https://github.com/tippi-fifestarr/highway-billboard)
+- [Phase 1 Summary](./phase-1-summary.md) - Development journey pt 1
+- [Phase 2 Summary](./phase-2-summary.md) - Full integration completion
 
 ## 📞 Support & Contact
 
 **Project Maintainer**: tippi (DevDocs.work)  
 **Client**: Aptos Labs  
-**Purpose**: Developer experience improvement & feature feedback
+**Purpose**: Production-ready showcase of Aptos Build ecosystem
 
 For technical questions or feedback:
 - Create GitHub issue with detailed description
 - Include console logs and steps to reproduce
+- Use built-in test pages to isolate issues
 - Tag with appropriate labels (bug/enhancement/feedback)
 
 ---
@@ -270,13 +391,13 @@ For technical questions or feedback:
 ## 🎉 Acknowledgments
 
 Special thanks to:
-- **Aptos Labs** for innovative blockchain infrastructure
+- **Aptos Labs** for innovative blockchain infrastructure and responsive support
 - **DevDocs.work** for developer documentation expertise  
-- **Community Contributors** who posted messages and tested the platform
-- **Alice & Bob** (our AI development assistants) for debugging support! 🤖
+- **Community Contributors** who tested the platform and provided feedback
+- **Highway Travelers** who posted messages and helped validate the UX! 🚗
 
 ---
 
 *Built with ❤️ for the Aptos ecosystem*
 
-**Ready to drive the blockchain highway? Start your engines! 🚗💨**
+**Ready to drive the blockchain highway? Your gas tank is full! ⛽🚗💨**

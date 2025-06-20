@@ -100,7 +100,7 @@ export function useWallet() {
       return {
         method: 'none',
         description: 'Connect wallet to see payment method',
-        color: '#666666',
+        color: '#FFFFFF', // White text for visibility on dark background
         icon: '🔌'
       };
     }
@@ -109,14 +109,14 @@ export function useWallet() {
       return {
         method: 'sponsored',
         description: 'Free gas courtesy of gas station',
-        color: '#00CC00',
+        color: '#00CC00', // Green for free gas
         icon: '⛽'
       };
     } else {
       return {
         method: 'user-paid',
         description: 'You pay gas fees (normal transaction)',
-        color: '#FFCC00',
+        color: '#FFCC00', // Yellow for paid gas
         icon: '💰'
       };
     }
@@ -127,6 +127,17 @@ export function useWallet() {
     const fetchBalance = async () => {
       if (connected && account) {
         try {
+          // Auto-detect wallet type if not set
+          if (!walletType && wallet) {
+            if (wallet.name === 'Petra') {
+              setWalletType('petra');
+              console.log('🔍 Auto-detected Petra wallet');
+            } else if (wallet.name === 'Continue with Google') {
+              setWalletType('social');
+              console.log('🔍 Auto-detected Google social login');
+            }
+          }
+          
           const addressStr = getAddressString();
           if (!addressStr) {
             console.error('Could not get address string from account');
@@ -154,11 +165,12 @@ export function useWallet() {
         setStatus(WalletStatus.DISCONNECTED);
         setBalance(0);
         setFuelPercentage(0);
+        setWalletType(null); // Reset wallet type when disconnected
       }
     };
     
     fetchBalance();
-  }, [connected, account]);
+  }, [connected, account, wallet, walletType]);
   
   // Network validation effect
   useEffect(() => {
