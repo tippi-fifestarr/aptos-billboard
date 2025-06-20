@@ -24,7 +24,14 @@ export class BillboardIndexerClient {
   }
 
   // Execute GraphQL query
-  private async executeQuery(query: string, variables: Record<string, any> = {}): Promise<any> {
+  private async executeQuery(query: string, variables: Record<string, unknown> = {}): Promise<{
+    table?: IndexedMessage[];
+    table_aggregate?: {
+      aggregate?: {
+        count?: number;
+      };
+    };
+  }> {
     try {
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',

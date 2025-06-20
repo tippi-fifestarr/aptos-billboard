@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useWallet as useAptosWallet } from '@aptos-labs/wallet-adapter-react';
 import { getAccountAPTBalance } from '@/lib/billboardService';
 import { WalletStatus, WalletType, WalletAccount } from '@/types';
@@ -81,13 +81,13 @@ export function useWallet() {
   };
   
   // Get address as string for transactions
-  const getAddressString = (): string | null => {
+  const getAddressString = useCallback((): string | null => {
     if (!account) return null;
     
     return typeof account.address === 'string'
       ? account.address
       : String(account.address);
-  };
+  }, [account]);
   
   // Check if gas station is available for current wallet
   const isGasStationAvailable = (): boolean => {
@@ -170,7 +170,7 @@ export function useWallet() {
     };
     
     fetchBalance();
-  }, [connected, account, wallet, walletType]);
+  }, [connected, account, wallet, walletType, getAddressString]);
   
   // Network validation effect
   useEffect(() => {

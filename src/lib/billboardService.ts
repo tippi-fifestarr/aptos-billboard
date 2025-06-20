@@ -1,9 +1,8 @@
 // src/lib/billboardService.ts
-import { 
-    Aptos, 
-    AptosConfig, 
-    Network, 
-    AccountAddress,
+import {
+    Aptos,
+    AptosConfig,
+    Network,
   } from "@aptos-labs/ts-sdk";
   
   // Configure for devnet (fixed from the generated code)
@@ -55,9 +54,13 @@ import {
           },
         });
   
-        const messages = result[0] as any[];
+        const messages = result[0] as Array<{
+          content: string;
+          author: string;
+          timestamp: string;
+        }>;
         
-        return messages.map((msg: any) => ({
+        return messages.map((msg) => ({
           content: msg.content,
           author: msg.author,
           timestamp: msg.timestamp,

@@ -12,7 +12,7 @@ export default function TestIntegrationPage() {
     try {
       const result = await testIndexerFunctionality();
       setIndexerStatus(result.success ? '✅ Indexer Working' : '❌ Indexer Failed');
-    } catch (error) {
+    } catch {
       setIndexerStatus('❌ Test Failed');
     }
   };
@@ -46,7 +46,7 @@ export default function TestIntegrationPage() {
             <div className="space-y-2">
               <h3 className="font-semibold text-yellow-300">Gas Gauge Tests:</h3>
               <ul className="text-blue-200 space-y-1">
-                <li>• Shows "Connect wallet to check fuel" when disconnected</li>
+                <li>• Shows &quot;Connect wallet to check fuel&quot; when disconnected</li>
                 <li>• Displays real APT balance when connected</li>
                 <li>• Shows fuel gauge bar with color coding</li>
                 <li>• Indicates payment method (⛽ free vs 💰 paid)</li>
