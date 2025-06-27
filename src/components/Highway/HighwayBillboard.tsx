@@ -6,6 +6,7 @@ import { getAllMessages, formatTimestamp, shortenAddress } from '@/lib/billboard
 import { useWallet } from '@/hooks/useWallet';
 import { WalletStatus, GasStationTransaction } from '@/types';
 import { HIGHWAY_COLORS } from '@/utils/constants';
+import Footer from '@/components/Footer';
 
 interface Message {
   content: string;
@@ -100,6 +101,9 @@ export default function HighwayBillboard() {
           <PostBillboardSection onMessagePosted={loadMessages} />
         </div>
       </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

@@ -8,13 +8,42 @@ A production-ready blockchain messaging application showcasing the complete Apto
 
 ## 🎯 Project Mission
 
-This project serves as a comprehensive demonstration of the full Aptos Build ecosystem:
+This project was **vibecoded** by [tippi fifestarr](https://github.com/tippi-fifestarr) to showcase the incredible developer tools that Aptos provides and inspire others to build their own creative dApps! 
+
+**What makes this special:**
 - **📊 No-Code Indexer** - Real-time blockchain data processing with GraphQL
 - **⛽ Gas Station** - Zero-fee transactions for seamless user onboarding  
 - **🔐 Aptos Connect** - Social login integration (Google OAuth)
 - **🎨 Beautiful UX** - Highway metaphors make Web3 accessible to mainstream users
 
-Built for DevDocs.work as part of Aptos client engagement to showcase production-ready developer tools and gather real-world feedback.
+The beauty of blockchain contracts is that **the UX is entirely up to you!** This same billboard contract could power completely different experiences. Want to build your own? Check out the [Vibe Coder to Aptos Guide](https://aptos-learn-git-tippi-vibe-test-deploy-aptoslabs.vercel.app/en/hackathon/vibe-coder-to-aptos-guide/introduction) for prompts and guidance to get started with Aptos development.
+
+## 🌟 Fork This & Build Your Own Billboard dApp!
+
+The same smart contract can power infinite creative frontends. Here are some inspiring ideas:
+
+### 🌌 **Cosmic Billboard** 
+*"Name a Star, Share Your Story"*
+- Transform messages into constellation patterns
+- Users "buy" stars to post messages
+- Cosmic theme with nebula backgrounds and twinkling animations
+- Messages appear as named stars in a galaxy view
+
+### ⚔️ **Fantastic Billboard** 
+*"Quest Boards for RPG Adventures"*
+- Medieval/fantasy theme with quest posting mechanics
+- Messages become quests, bounties, or tavern notices
+- Character avatars, guild systems, and reputation scoring
+- Parchment textures and fantasy UI elements
+
+### 🏙️ **Neon Billboard**
+*"Cyberpunk Message Matrix"*
+- Futuristic cityscape with holographic billboards
+- Messages appear as neon signs in a 3D city
+- Synthwave aesthetics with glitch effects
+- Digital rain and cyberpunk styling
+
+**Ready to build your own?** Fork this repo and let your creativity run wild! The [Vibe Coder Guide](https://aptos-learn-git-tippi-vibe-test-deploy-aptoslabs.vercel.app/en/hackathon/vibe-coder-to-aptos-guide/introduction) has everything you need to get started.
 
 ## ✨ Features
 
@@ -80,8 +109,8 @@ Built for DevDocs.work as part of Aptos client engagement to showcase production
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/tippi-fifestarr/highway-billboard
-   cd highway-billboard/billboard-frontend
+   git clone https://github.com/tippi-fifestarr/aptos-billboard
+   cd aptos-billboard/billboard-frontend
    ```
 
 2. **Install dependencies**
@@ -125,7 +154,6 @@ Built for DevDocs.work as part of Aptos client engagement to showcase production
    aptos move run --function-id default::billboard::send_message --args address:default string:"Hello Highway!"
    ```
 
-
 ## 🔧 Environment Setup
 
 ### Required API Keys
@@ -158,6 +186,8 @@ You need **two separate API keys** from [Aptos Build](https://build.aptoslabs.co
    # Gas Station Configuration
    NEXT_PUBLIC_GAS_STATION_API_KEY=aptoslabs_YOUR_GAS_STATION_KEY
    ```
+
+**Need help getting started?** The [Vibe Coder to Aptos Guide](https://aptos-learn-git-tippi-vibe-test-deploy-aptoslabs.vercel.app/en/hackathon/vibe-coder-to-aptos-guide/introduction) has detailed prompts and step-by-step instructions for Aptos development.
 
 ## 🧪 Testing & Verification
 
@@ -370,15 +400,16 @@ We welcome contributions that improve the developer experience and showcase Apto
 ## 📖 Documentation
 
 - [Environment Setup Guide](./.env.example) - Complete configuration instructions
-- [Integration Plan](./integration-plan.md) - Technical implementation details for merging in the features from the [terrible UI version of this](https://github.com/tippi-fifestarr/highway-billboard)
+- [API Keys Guide](./APTOS-API-KEYS-GUIDE.md) - Comprehensive guide to Aptos Build API keys
+- [Integration Plan](./integration-plan.md) - Technical implementation details
 - [Phase 1 Summary](./phase-1-summary.md) - Development journey pt 1
 - [Phase 2 Summary](./phase-2-summary.md) - Full integration completion
+- [Vibe Coder Guide](https://aptos-learn-git-tippi-vibe-test-deploy-aptoslabs.vercel.app/en/hackathon/vibe-coder-to-aptos-guide/introduction) - Get started building on Aptos
 
 ## 📞 Support & Contact
 
-**Project Maintainer**: tippi (DevDocs.work)  
-**Client**: Aptos Labs  
-**Purpose**: Production-ready showcase of Aptos Build ecosystem
+**Project Creator**: [tippi fifestarr](https://github.com/tippi-fifestarr)  
+**Purpose**: Showcase Aptos Build ecosystem and inspire creative dApp development
 
 For technical questions or feedback:
 - Create GitHub issue with detailed description
@@ -392,12 +423,14 @@ For technical questions or feedback:
 
 Special thanks to:
 - **Aptos Labs** for innovative blockchain infrastructure and responsive support
-- **DevDocs.work** for developer documentation expertise  
 - **Community Contributors** who tested the platform and provided feedback
 - **Highway Travelers** who posted messages and helped validate the UX! 🚗
+- **Future Builders** who will fork this and create amazing new experiences! 🌟
 
 ---
 
-*Built with ❤️ for the Aptos ecosystem*
+*Vibecoded with ❤️ for the Aptos ecosystem*
 
 **Ready to drive the blockchain highway? Your gas tank is full! ⛽🚗💨**
+
+**Want to build your own billboard dApp?** Check out the [Vibe Coder to Aptos Guide](https://aptos-learn-git-tippi-vibe-test-deploy-aptoslabs.vercel.app/en/hackathon/vibe-coder-to-aptos-guide/introduction) and let your creativity run wild! 🚀
