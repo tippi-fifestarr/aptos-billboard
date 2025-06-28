@@ -401,6 +401,7 @@ We welcome contributions that improve the developer experience and showcase Apto
 
 - [Environment Setup Guide](./.env.example) - Complete configuration instructions
 - [API Keys Guide](./APTOS-API-KEYS-GUIDE.md) - Comprehensive guide to Aptos Build API keys
+- [Gas Station Complete Guide](./GAS-STATION-COMPLETE-GUIDE.md) - Everything about implementing sponsored transactions
 - [Integration Plan](./integration-plan.md) - Technical implementation details
 - [Phase 1 Summary](./phase-1-summary.md) - Development journey pt 1
 - [Phase 2 Summary](./phase-2-summary.md) - Full integration completion
