@@ -139,18 +139,20 @@ export async function buildMessageTransaction(
 }
 
 /**
- * Submit a signed transaction via gas station
+ * Submit a signed transaction via gas station (SDK v2)
  */
 export async function submitGasStationTransaction(
-  transaction: unknown,
-  senderAuthenticator: unknown
+  transaction: SimpleTransaction,
+  senderAuthenticator: AccountAuthenticator
 ) {
   try {
     console.log('Submitting transaction to gas station...');
     
+    // SDK v2: Gas Station client now accepts proper types and optional fee-payer signature
     const response = await gasStationClient.simpleSignAndSubmitTransaction(
-      transaction as SimpleTransaction,
-      senderAuthenticator as AccountAuthenticator
+      transaction,
+      senderAuthenticator,
+      undefined // fee-payer signature handled by Gas Station
     );
     
     if (response.error !== undefined || response.data === undefined) {
@@ -249,13 +251,16 @@ export async function processMessageTransaction(
       throw new Error('Failed to sign transaction - no authenticator returned');
     }
     
+    // Type assertion to handle version conflicts between wallet adapter and main SDK
+    const authenticator = signResult.authenticator as AccountAuthenticator;
+    
     // Step 5: Submit transaction
     let transactionHash: string;
     
     if (useGasStation) {
-      transactionHash = await submitGasStationTransaction(transaction, signResult.authenticator);
+      transactionHash = await submitGasStationTransaction(transaction, authenticator);
     } else {
-      transactionHash = await submitNormalTransaction(transaction, signResult.authenticator);
+      transactionHash = await submitNormalTransaction(transaction, authenticator);
     }
     
     // Step 6: Wait for confirmation
