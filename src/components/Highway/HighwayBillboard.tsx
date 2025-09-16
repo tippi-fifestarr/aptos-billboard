@@ -275,7 +275,6 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
     connectWallet,
     disconnectWallet,
     addressString,
-    isGasStationAvailable,
     paymentInfo,
     signAndSubmitTransaction,
     error
@@ -355,7 +354,7 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
           
           <h3 className="text-xl font-bold text-white mb-2">🛣️ Highway Rest Stop</h3>
           <p className="text-blue-200 mb-4">
-            Connect your wallet to post a billboard message on tippi's highway
+            Connect your wallet to post a billboard message on tippi&apos;s highway
           </p>
           
           {!showWalletOptions ? (
@@ -378,7 +377,7 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
                 <span className="text-xl">🦊</span>
                 <div className="text-left">
                   <div>Petra Wallet</div>
-                  <div className="text-xs opacity-90">⛽ Sponsored gas on tippi's highway</div>
+                  <div className="text-xs opacity-90">⛽ Sponsored gas on tippi&apos;s highway</div>
                 </div>
               </button>
 
@@ -390,7 +389,7 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
                 <span className="text-xl">🔗</span>
                 <div className="text-left">
                   <div>Google Login</div>
-                  <div className="text-xs opacity-90">⛽ Sponsored gas on tippi's highway</div>
+                  <div className="text-xs opacity-90">⛽ Sponsored gas on tippi&apos;s highway</div>
                 </div>
               </button>
               
@@ -482,7 +481,7 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
                 </>
               ) : (
                 <>
-                  🚗 Post to Tippi's Highway (FREE GAS)
+                  🚗 Post to Tippi&apos;s Highway (FREE GAS)
                 </>
               )}
             </button>

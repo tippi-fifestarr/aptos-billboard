@@ -88,7 +88,7 @@ export function validateMessageContent(content: string): { valid: boolean; error
  */
 export async function processMessageTransaction(
   transactionData: GasStationTransaction,
-  signAndSubmitTransaction: (transaction: any) => Promise<any>
+  signAndSubmitTransaction: (transaction: unknown) => Promise<unknown>
 ) {
   const { sender, content } = transactionData;
 

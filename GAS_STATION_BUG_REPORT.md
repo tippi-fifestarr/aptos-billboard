@@ -21,7 +21,7 @@ Transactions should be sponsored by the gas station, showing 0 APT network fees 
 ## Configuration Details
 
 ### 1. Gas Station API Key
-- **API Key**: `aptoslabs_4LqT6avuF1A_7LPZK8f9QNzCuASd3NsBpyCZgRLrKgVyF`
+- **API Key**: `aptoslabs_[REDACTED]` (from "highway" application)
 - **Application**: "highway" (Gas Station type "Gs")
 - **Network**: testnet
 - **Organization**: sasha-letchinger-devdocs-work
@@ -90,17 +90,45 @@ const response = await signAndSubmitTransaction(transaction);
 
 ## Investigation Attempts
 
-### 1. MCP Tool Attempts
+### 1. MCP-Recommended Approach (FAILED)
+**Configuration**:
+- `GasStationTransactionSubmitter` constructor
+- Production endpoints
+- `@aptos-labs/gas-station-client@2.0.2`
+
+**Result**: Proper initialization, but transactions still charge users.
+
+### 2. Chess Repo Approach (ALSO FAILED)
+Found working gas station implementation at https://github.com/banool/aptos-chess and replicated their exact approach:
+
+**Configuration**:
+- `createGasStationClientRaw` function
+- Staging endpoints: `https://api.testnet.staging.aptoslabs.com/*`
+- `@aptos-labs/gas-station-client@1.1.1` (downgraded)
+- Manual Bearer token authorization
+
+**Console Output** (Shows proper setup):
+```
+🛣️ Highway Billboard Gas Station Configuration (Chess approach):
+Network: testnet
+API Key loaded: true
+Gas Station Raw Client created: true
+Aptos client configured with staging gas station: true
+```
+
+**Result**: Still charges users despite identical configuration to working chess repo.
+
+### 3. MCP Tool Creation Attempts
 Tried creating new gas station applications via MCP tools but consistently received:
 ```
 ❌ Failed to create Gas Station application: Error: Failed to create api key: {"code":400,"message":"error deserializing procedure arguments"}
 ```
 
-### 2. Different API Keys Tested
-- `aptoslabs_SCzXNuu7DpW_NCKXjZ8xTv2X9xtTW5xJis8nESvn21bX8` (highwaygasstation)
-- `aptoslabs_4LqT6avuF1A_7LPZK8f9QNzCuASd3NsBpyCZgRLrKgVyF` (highway)
+### 4. Different API Keys Tested
+- `aptoslabs_[REDACTED_1]` (highwaygasstation)
+- `aptoslabs_[REDACTED_2]` (highway)
 
-Both show proper initialization but no sponsorship.
+Both approaches show proper initialization but no actual sponsorship.
 
 ## Suspected Issues
 
