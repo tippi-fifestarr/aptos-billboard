@@ -26,25 +26,25 @@ export function useWallet() {
   const [walletType, setWalletType] = useState<WalletType>(null);
   const [error, setError] = useState<string | null>(null);
   
-  // Connect to wallet with type detection
+  // Connect to wallet with automatic sponsorship
   const connectWallet = async (preferredType: WalletType = 'petra') => {
     try {
       setStatus(WalletStatus.CONNECTING);
       setError(null);
-      
+
       if (preferredType === 'petra') {
         // Check network before connecting
         if (network && network.name && !network.name.toLowerCase().includes('testnet')) {
           console.warn('Wallet not on Testnet - gas station may not work');
         }
-        
+
         await connect("Petra");
         setWalletType('petra');
-        console.log(SUCCESS_MESSAGES.walletConnected + ' (Petra - Gas Station Available)');
+        console.log(SUCCESS_MESSAGES.walletConnected + ' (Petra - Sponsored Gas Available)');
       } else if (preferredType === 'social') {
         await connect("Continue with Google");
         setWalletType('social');
-        console.log(SUCCESS_MESSAGES.walletConnected + ' (Social Login - User Pays Gas)');
+        console.log(SUCCESS_MESSAGES.walletConnected + ' (Google - Sponsored Gas Available)');
       }
     } catch (error) {
       console.error('Error connecting wallet:', error);
@@ -91,35 +91,27 @@ export function useWallet() {
   
   // Check if gas station is available for current wallet
   const isGasStationAvailable = (): boolean => {
-    return walletType === 'petra' && connected;
+    return connected; // All connected wallets now get sponsored transactions
   };
-  
+
   // Get payment method info for UI
   const getPaymentInfo = () => {
     if (!connected || !walletType) {
       return {
         method: 'none',
-        description: 'Connect wallet to see payment method',
+        description: 'Connect wallet to post messages on tippi\'s highway',
         color: '#FFFFFF', // White text for visibility on dark background
         icon: '🔌'
       };
     }
-    
-    if (walletType === 'petra') {
-      return {
-        method: 'sponsored',
-        description: 'Free gas courtesy of gas station',
-        color: '#00CC00', // Green for free gas
-        icon: '⛽'
-      };
-    } else {
-      return {
-        method: 'user-paid',
-        description: 'You pay gas fees (normal transaction)',
-        color: '#FFCC00', // Yellow for paid gas
-        icon: '💰'
-      };
-    }
+
+    // All wallets now get sponsored transactions
+    return {
+      method: 'sponsored',
+      description: 'Free gas courtesy of tippi\'s highway gas station',
+      color: '#00CC00', // Green for free gas
+      icon: '⛽'
+    };
   };
   
   // Update balance when account changes
