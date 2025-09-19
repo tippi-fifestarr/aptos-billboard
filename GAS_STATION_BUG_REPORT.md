@@ -147,17 +147,43 @@ Possible incompatibility between:
 - `@aptos-labs/gas-station-client` v2.0.2
 - `@aptos-labs/wallet-adapter-react` v6.1.2
 
-## Questions for Aptos Team
+## Investigation Findings
 
-1. **Function Whitelisting**: How do we configure gas stations to sponsor specific contract functions? Is this done in the Build dashboard?
+### Function Whitelisting Status ✅
+**RESOLVED**: Verified via Build dashboard that `send_message` function is properly whitelisted and shows "CONFIGURED" status in both gas station applications tested.
 
-2. **MCP Tool Issues**: Why are the MCP gas station creation tools failing with deserialization errors?
+### Gas Station Application Mismatch 🔍
+**DISCOVERED**: Production Vercel deployment (which worked in June) uses API key from `highwaygasstation` application:
+- **Working Production Key**: `aptoslabs_SCzXNuu7DpW_...` (from `highwaygasstation` app)
+- **Failing Local Key**: `aptoslabs_4LqT6avuF1A_...` (from `highway` app)
 
-3. **Integration Verification**: Is our integration approach correct per the latest SDK versions?
+Both applications have `send_message` function configured, but exhibit different behavior.
 
-4. **Debug Tools**: Are there any debug tools or logs we can check to see why sponsorship isn't working?
+### Integration Approach Analysis 🔍
+**Git diff analysis reveals**:
+- **Original working setup (main branch)**: Simple `AptosWalletAdapterProvider` with basic `dappConfig={{ network }}` - NO explicit gas station integration
+- **Current failing setup**: Complex gas station integration with `createGasStationClientRaw`, staging endpoints, and transaction submitter injection
 
-5. **Manual Configuration**: Can gas station function whitelisting be done manually through the Build dashboard?
+### Test Results
+1. **MCP-Recommended Approach**: Failed despite proper configuration
+2. **Chess Repo Replication**: Failed despite matching working repository exactly
+3. **Production Key Test**: Still fails locally even with working production API key
+
+### Domain/Environment Hypothesis 🤔
+Gas station may work in production (Vercel) but not locally due to:
+- Domain allowlisting restrictions (localhost not whitelisted)
+- Environment-specific configurations
+- Origin header validation
+
+## Remaining Questions for Aptos Team
+
+1. **Gas Station Application Differences**: Why do different gas station applications with identical function configurations behave differently?
+
+2. **MCP Tool Bug**: Why do MCP gas station creation tools fail with "error deserializing procedure arguments"?
+
+3. **Integration Best Practices**: Should gas station integration be explicit (with clients) or rely on wallet adapter auto-detection?
+
+4. **Domain Restrictions**: Are gas stations restricted by domain/origin, and if so, how are development environments typically configured?
 
 ## Repository
 - **Code**: https://github.com/tippi-fifestarr/aptos-billboard
