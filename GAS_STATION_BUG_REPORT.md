@@ -1,9 +1,13 @@
-# Gas Station Sponsored Transactions Bug Report
+# Gas Station Sponsored Transactions Report (Resolved)
+
+> Outcome: Sponsored transactions now work for both Petra and Aptos Connect on Testnet. The final fix was to submit transactions with `withFeePayer: true`, cap gas to match the Gas Station rule (e.g., `maxGasAmount: 50`, `gasUnitPrice: 100`), and pass a per-transaction `transactionSubmitter` for Aptos Connect. Dependencies were also aligned to the latest compatible versions.
 
 ## Issue Summary
 Gas Station integration appears to be properly configured but transactions are NOT being sponsored. Users are still being charged network fees despite following MCP guidance and proper configuration.
 
 ## Environment
+
+### At time of issue (broken)
 - **Network**: Aptos Testnet
 - **Framework**: Next.js 15.3.3 with React 18
 - **SDK Version**: @aptos-labs/ts-sdk v3.0.0
@@ -11,12 +15,18 @@ Gas Station integration appears to be properly configured but transactions are N
 - **Gas Station Client**: @aptos-labs/gas-station-client v2.0.2
 - **Wallets Tested**: Petra Wallet, Aptos Connect (Google)
 
+### Resolution environment (working)
+- **Framework**: Next.js 15.5.x with React 18
+- **SDK Version**: @aptos-labs/ts-sdk ^3.1.3
+- **Wallet Adapter**: @aptos-labs/wallet-adapter-react ^7.0.7
+- **Gas Station Client**: @aptos-labs/gas-station-client ^2.0.3
+
 ## Expected Behavior
 Transactions should be sponsored by the gas station, showing 0 APT network fees to users.
 
-## Actual Behavior
-- **Petra Wallet**: Shows "Network fee: 0.00000600 APT" - user is charged
-- **Google/Aptos Connect**: Shows "Network Fee: 0.000038 APT" - user is charged
+## Actual Behavior (before fix)
+- **Petra Wallet**: Sometimes charged fees depending on config
+- **Aptos Connect (Google)**: Showed fee prompts; required user APT
 
 ## Configuration Details
 
@@ -31,7 +41,7 @@ Transactions should be sponsored by the gas station, showing 0 APT network fees 
 0x24051bca580d28e80a340a17f87c99def0cc0bde05f9f9d88e8eebdfad1cfb03::billboard::send_message
 ```
 
-### 3. WalletProvider Configuration (Following MCP Guidance)
+### 3. WalletProvider Configuration (initial)
 ```typescript
 // Create Gas Station client for sponsored transactions (MCP-guided approach)
 const gasStationTransactionSubmitter = new GasStationTransactionSubmitter({
@@ -68,8 +78,8 @@ Gas Station Submitter created: true
 Aptos client configured with gas station: true
 ```
 
-### 5. Transaction Submission
-Using wallet adapter's `signAndSubmitTransaction`:
+### 5. Transaction Submission (initial)
+Using wallet adapter's `signAndSubmitTransaction` without fee payer:
 ```typescript
 const transaction = {
   data: {
@@ -90,7 +100,7 @@ const response = await signAndSubmitTransaction(transaction);
 
 ## Investigation Attempts
 
-### 1. MCP-Recommended Approach (FAILED)
+### 1. MCP-Recommended Approach (initially failed)
 **Configuration**:
 - `GasStationTransactionSubmitter` constructor
 - Production endpoints
@@ -98,7 +108,7 @@ const response = await signAndSubmitTransaction(transaction);
 
 **Result**: Proper initialization, but transactions still charge users.
 
-### 2. Chess Repo Approach (ALSO FAILED)
+### 2. Chess Repo Approach (also failed initially)
 Found working gas station implementation at https://github.com/banool/aptos-chess and replicated their exact approach:
 
 **Configuration**:
@@ -160,9 +170,8 @@ Possible incompatibility between:
 Both applications have `send_message` function configured, but exhibit different behavior.
 
 ### Integration Approach Analysis 🔍
-**Git diff analysis reveals**:
-- **Original working setup (main branch)**: Simple `AptosWalletAdapterProvider` with basic `dappConfig={{ network }}` - NO explicit gas station integration
-- **Current failing setup**: Complex gas station integration with `createGasStationClientRaw`, staging endpoints, and transaction submitter injection
+- We confirmed a working pattern in a minimal gastest app using: `withFeePayer: true`, gas caps aligned to the Gas Station rule, and passing a per-transaction `transactionSubmitter`.
+- The main page already supported Petra sponsorship; Aptos Connect still required an explicit per-transaction `transactionSubmitter`.
 
 ### Test Results
 1. **MCP-Recommended Approach**: Failed despite proper configuration
@@ -175,15 +184,39 @@ Gas station may work in production (Vercel) but not locally due to:
 - Environment-specific configurations
 - Origin header validation
 
-## Remaining Questions for Aptos Team
+## Final Fix (Working Solution)
 
-1. **Gas Station Application Differences**: Why do different gas station applications with identical function configurations behave differently?
+1. Ensure packages are on compatible versions:
+   - `@aptos-labs/ts-sdk`: ^3.1.3
+   - `@aptos-labs/gas-station-client`: ^2.0.3
+   - `@aptos-labs/wallet-adapter-react`: ^7.0.7
+   - React 18, Next.js 15.5.x
 
-2. **MCP Tool Bug**: Why do MCP gas station creation tools fail with "error deserializing procedure arguments"?
+2. Configure the transaction with fee payer and gas caps that match the Gas Station rule:
+```ts
+await signAndSubmitTransaction({
+  data: {
+    function: `${BILLBOARD_ADDRESS}::billboard::send_message`,
+    functionArguments: [BILLBOARD_ADDRESS, message],
+  },
+  withFeePayer: true,
+  options: {
+    maxGasAmount: 50,
+    gasUnitPrice: 100,
+  },
+  // Critical for Aptos Connect
+  transactionSubmitter: new GasStationTransactionSubmitter({
+    network: Network.TESTNET,
+    apiKey: GAS_STATION_API_KEY,
+  }),
+});
+```
 
-3. **Integration Best Practices**: Should gas station integration be explicit (with clients) or rely on wallet adapter auto-detection?
+3. Keep the provider-level `transactionSubmitter` for Petra convenience, but pass a per-transaction `transactionSubmitter` to support Aptos Connect consistently.
 
-4. **Domain Restrictions**: Are gas stations restricted by domain/origin, and if so, how are development environments typically configured?
+4. Environment variable compatibility: support both `NEXT_PUBLIC_GAS_STATION_API_KEY` and `NEXT_PUBLIC_APTOS_GAS_STATION_API_KEY`.
+
+Result: Petra and Aptos Connect both submit sponsored transactions (0 APT fees) against the configured rule.
 
 ## Repository
 - **Code**: https://github.com/tippi-fifestarr/aptos-billboard
@@ -191,8 +224,17 @@ Gas station may work in production (Vercel) but not locally due to:
 - **Live Site**: https://a-highway-billboard.vercel.app/
 
 ## Impact
-This prevents seamless user onboarding as intended by gas stations. Users still need APT tokens for gas fees, defeating the purpose of sponsored transactions.
+Sponsored transactions now work across Petra and Aptos Connect, restoring a consistent onboarding UX with 0 APT fees.
 
 ---
 
-*Generated on 2025-09-16 by tippi fifestarr working with Claude Code*
+---
+
+Timeline
+- Initial failures reproduced locally despite proper-looking setup.
+- Identified Gas Station rule cap mismatch (200000 default vs 50 allowed) and added gas caps.
+- Added `withFeePayer: true` to signal fee payer usage.
+- Aligned dependency versions to latest compatible line.
+- Added per-transaction `transactionSubmitter` to fix Aptos Connect flow.
+
+This document reflects the journey and the final working solution.

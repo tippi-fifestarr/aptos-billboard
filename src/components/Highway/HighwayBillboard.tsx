@@ -315,7 +315,20 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
         walletType: 'sponsored',
       };
 
-      await processMessageTransaction(transactionData, signAndSubmitTransaction);
+      const { Network } = await import('@aptos-labs/ts-sdk');
+      const { GasStationTransactionSubmitter } = await import('@aptos-labs/gas-station-client');
+      const { GAS_STATION_API_KEY } = await import('@/utils/constants');
+
+      const transactionSubmitter = new GasStationTransactionSubmitter({
+        network: Network.TESTNET,
+        apiKey: GAS_STATION_API_KEY,
+      });
+
+      await processMessageTransaction(
+        transactionData,
+        signAndSubmitTransaction,
+        transactionSubmitter as unknown,
+      );
 
       // Success!
       setMessage('');

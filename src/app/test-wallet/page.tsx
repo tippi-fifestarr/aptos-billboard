@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { useWallet } from '@/hooks/useWallet';
+import { Network } from '@aptos-labs/ts-sdk';
+import { GasStationTransactionSubmitter } from '@aptos-labs/gas-station-client';
+import { GAS_STATION_API_KEY } from '@/utils/constants';
 import { getGasStationStatus, processMessageTransaction } from '@/services/gasStation';
 import { WalletStatus, GasStationTransaction } from '@/types';
 // No need for specific transaction types - we'll use flexible casting
@@ -19,7 +22,7 @@ export default function TestWalletPage() {
     isGasStationAvailable,
     paymentInfo,
     refreshBalance,
-    signTransaction,
+    signAndSubmitTransaction,
   } = useWallet();
 
   const [gasStationStatus] = useState(() => getGasStationStatus());
@@ -65,19 +68,21 @@ export default function TestWalletPage() {
 
       console.log(`🧪 Testing transaction with ${walletType} wallet (${isGasStationAvailable ? 'sponsored' : 'user-paid'})`);
 
-      // Create a wrapper function to match the expected signature
-      const signTransactionWrapper = async (transaction: { transactionOrPayload: unknown }) => {
-        const result = await signTransaction({
-          transactionOrPayload: transaction.transactionOrPayload as never,
-        });
-        return {
-          authenticator: result.authenticator,
-        };
-      };
+      const transactionSubmitter = new GasStationTransactionSubmitter({
+        network: Network.TESTNET,
+        apiKey: GAS_STATION_API_KEY,
+      });
 
-      const result = await processMessageTransaction(transactionData, signTransactionWrapper);
+      const result = await processMessageTransaction(
+        transactionData,
+        signAndSubmitTransaction as unknown as (tx: unknown) => Promise<any>,
+        transactionSubmitter as unknown,
+      );
       
-      setTransactionResult(result);
+      setTransactionResult({
+        ...result,
+        walletType: walletType ?? null,
+      });
       setTestMessage(''); // Clear form on success
       
       // Refresh balance after successful transaction

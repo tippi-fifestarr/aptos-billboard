@@ -4,7 +4,8 @@
 import {
   CONTRACT_ADDRESS,
   MODULE_NAME,
-  ERROR_MESSAGES
+  ERROR_MESSAGES,
+  GAS_STATION_API_KEY
 } from '@/utils/constants';
 import type { GasStationTransaction } from '@/types';
 
@@ -54,6 +55,18 @@ export function checkRateLimit(userAddress: string): { allowed: boolean; resetTi
 }
 
 /**
+ * Returns basic Gas Station status for UI
+ */
+export function getGasStationStatus(): { available: boolean; message: string; apiKeyConfigured: boolean } {
+  const apiKeyConfigured = !!GAS_STATION_API_KEY;
+  const available = apiKeyConfigured; // basic check; can extend with ping later
+  const message = available
+    ? 'Gas Station is configured and ready for sponsored transactions.'
+    : 'Gas Station is not configured. Set NEXT_PUBLIC_GAS_STATION_API_KEY.';
+  return { available, message, apiKeyConfigured };
+}
+
+/**
  * Validate message content
  */
 export function validateMessageContent(content: string): { valid: boolean; error?: string } {
@@ -88,7 +101,8 @@ export function validateMessageContent(content: string): { valid: boolean; error
  */
 export async function processMessageTransaction(
   transactionData: GasStationTransaction,
-  signAndSubmitTransaction: (transaction: unknown) => Promise<unknown>
+  signAndSubmitTransaction: (transaction: unknown) => Promise<{ hash: string }>,
+  transactionSubmitter?: unknown
 ) {
   const { sender, content } = transactionData;
 
@@ -115,6 +129,14 @@ export async function processMessageTransaction(
         function: `${CONTRACT_ADDRESS}::${MODULE_NAME}::send_message`,
         functionArguments: [CONTRACT_ADDRESS, content],
       },
+      // Ensure Gas Station sponsorship and conform to configured limits
+      withFeePayer: true,
+      options: {
+        maxGasAmount: 50,
+        gasUnitPrice: 100,
+      },
+      // Per-transaction submitter improves compatibility with social/keyless wallets
+      transactionSubmitter,
     };
 
     const response = await signAndSubmitTransaction(transaction);
