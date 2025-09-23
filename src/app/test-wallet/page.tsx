@@ -75,7 +75,7 @@ export default function TestWalletPage() {
 
       const result = await processMessageTransaction(
         transactionData,
-        signAndSubmitTransaction as unknown as (tx: unknown) => Promise<any>,
+        signAndSubmitTransaction as unknown as (tx: unknown) => Promise<{ hash: string }>,
         transactionSubmitter as unknown,
       );
       
