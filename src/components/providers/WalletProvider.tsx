@@ -36,7 +36,6 @@ export default function WalletProvider({ children }: WalletProviderProps) {
       autoConnect={false}
       dappConfig={{
         network,
-        aptosApiKeys: { [network]: LEGACY_API_KEY || undefined },
       }}
       onError={(error) => {
         console.error("Highway Billboard Wallet error:", error);
