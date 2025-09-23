@@ -277,7 +277,8 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
     addressString,
     paymentInfo,
     signAndSubmitTransaction,
-    error
+    error,
+    walletType
   } = useWallet();
   
   const [message, setMessage] = useState('');
@@ -312,7 +313,7 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
         sender: addressString,
         content: message,
         useGasStation: true, // All transactions are now sponsored
-        walletType: 'sponsored',
+        walletType: walletType,
       };
 
       const { Network } = await import('@aptos-labs/ts-sdk');

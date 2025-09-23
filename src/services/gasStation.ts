@@ -8,6 +8,7 @@ import {
   GAS_STATION_API_KEY
 } from '@/utils/constants';
 import type { GasStationTransaction } from '@/types';
+import type { InputTransactionData } from '@aptos-labs/wallet-adapter-react';
 
 // Rate limiting storage (simple in-memory for demo - use Redis in production)
 interface RateLimit {
@@ -101,7 +102,7 @@ export function validateMessageContent(content: string): { valid: boolean; error
  */
 export async function processMessageTransaction(
   transactionData: GasStationTransaction,
-  signAndSubmitTransaction: (transaction: unknown) => Promise<{ hash: string }>,
+  signAndSubmitTransaction: (transaction: InputTransactionData) => Promise<{ hash: string }>,
   transactionSubmitter?: unknown
 ) {
   const { sender, content } = transactionData;
@@ -137,7 +138,7 @@ export async function processMessageTransaction(
       },
       // Per-transaction submitter improves compatibility with social/keyless wallets
       transactionSubmitter,
-    };
+    } as unknown as InputTransactionData;
 
     const response = await signAndSubmitTransaction(transaction);
 

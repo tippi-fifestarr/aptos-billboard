@@ -3,7 +3,6 @@
 import React, { ReactNode } from 'react';
 import { AptosWalletAdapterProvider } from '@aptos-labs/wallet-adapter-react';
 import { Network, Aptos, AptosConfig } from '@aptos-labs/ts-sdk';
-import { GasStationTransactionSubmitter } from '@aptos-labs/gas-station-client';
 import { NETWORK, GAS_STATION_API_KEY, LEGACY_API_KEY } from '@/utils/constants';
 
 interface WalletProviderProps {
@@ -23,20 +22,9 @@ export default function WalletProvider({ children }: WalletProviderProps) {
   console.log('Network:', network);
   console.log('API Key loaded:', !!GAS_STATION_API_KEY);
 
-  // Use standard Gas Station transaction submitter (production endpoints)
-  const gasStationTransactionSubmitter = new GasStationTransactionSubmitter({
-    network,
-    apiKey: GAS_STATION_API_KEY,
-  });
-
-  console.log('Gas Station Submitter created:', !!gasStationTransactionSubmitter);
-
-  // Configure Aptos client with gas station plugin
+  // Configure Aptos client without plugin to avoid type collisions between ts-sdk versions
   const config = new AptosConfig({
     network,
-    pluginSettings: {
-      TRANSACTION_SUBMITTER: gasStationTransactionSubmitter,
-    },
   });
 
   const aptosClient = new Aptos(config);
@@ -48,7 +36,6 @@ export default function WalletProvider({ children }: WalletProviderProps) {
       autoConnect={false}
       dappConfig={{
         network,
-        transactionSubmitter: aptosClient.config.getTransactionSubmitter(),
         aptosApiKeys: { [network]: LEGACY_API_KEY || undefined },
       }}
       onError={(error) => {
