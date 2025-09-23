@@ -52,7 +52,7 @@ The same smart contract can power infinite creative frontends. Here are some ins
 - **📱 Real-Time Data** - Live billboard updates via Aptos No-Code Indexer
 - **⛽ Gas Station Integration** - Sponsored transactions for Petra and Aptos Connect
 - **🔑 Social Login** - Google OAuth via Aptos Connect for seamless onboarding
-- **💰 Dual Payment System** - Petra gets free transactions, social login users pay normal fees
+- **💰 Sponsored for All** - Petra and Aptos Connect both post with 0 APT
 - **🚗 Interactive Gas Gauge** - Real balance display with connect buttons
 - **📍 Highway Rest Stop** - Fully functional gas station for wallet connections
 - **⭐ Auto-Refresh UX** - Seamless message posting with instant updates
@@ -110,7 +110,7 @@ The same smart contract can power infinite creative frontends. Here are some ins
 1. **Clone the repository**
    ```bash
    git clone https://github.com/tippi-fifestarr/aptos-billboard
-   cd aptos-billboard/billboard-frontend
+   cd aptos-billboard
    ```
 
 2. **Install dependencies**
@@ -287,8 +287,8 @@ User Action → Wallet Detection → Gas Station API → Sponsored Transaction
     transactionSubmitter,
   });
   ```
-- Keep provider-level `transactionSubmitter` for Petra convenience
-- Support both env names: `NEXT_PUBLIC_GAS_STATION_API_KEY` or `NEXT_PUBLIC_APTOS_GAS_STATION_API_KEY`
+- Prefer per-transaction submitter (we do not inject a provider-level submitter to avoid SSR/type collisions).
+- Support both env names: `NEXT_PUBLIC_GAS_STATION_API_KEY` or `NEXT_PUBLIC_APTOS_GAS_STATION_API_KEY`.
 
 ### Benefits for Users
 - **Zero Friction**: Petra users post messages for free
