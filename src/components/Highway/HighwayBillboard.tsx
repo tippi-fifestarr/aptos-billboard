@@ -83,6 +83,11 @@ export default function HighwayBillboard() {
           <FeaturedBillboard message={featuredMessage} />
         )}
 
+        {/* Post New Billboard - moved up between featured and keep driving */}
+        <div className="mt-12">
+          <PostBillboardSection onMessagePosted={loadMessages} />
+        </div>
+
         {/* Drive-by Messages */}
         <div className="mt-12">
           <div className="flex items-center space-x-4 mb-6">
@@ -92,13 +97,8 @@ export default function HighwayBillboard() {
               {messages.length} billboards on this highway
             </div>
           </div>
-          
-          <DriveByMessages messages={messages} />
-        </div>
 
-        {/* Post New Billboard */}
-        <div className="mt-12">
-          <PostBillboardSection onMessagePosted={loadMessages} />
+          <DriveByMessages messages={messages} />
         </div>
       </main>
 
@@ -244,13 +244,13 @@ function GasGauge() {
                     onClick={() => handleConnect('petra')}
                     className="w-full bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold py-1 px-2 rounded transition-colors"
                   >
-                    🦊 Petra (Free Gas)
+                    🦊 Petra
                   </button>
                   <button
                     onClick={() => handleConnect('social')}
-                    className="w-full bg-red-500 hover:bg-red-600 text-white text-xs font-bold py-1 px-2 rounded transition-colors"
+                    className="w-full bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold py-1 px-2 rounded transition-colors"
                   >
-                    🔗 Google (Pay Gas)
+                    🔗 Google
                   </button>
                   <button
                     onClick={() => setShowWalletOptions(false)}
@@ -275,10 +275,10 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
     connectWallet,
     disconnectWallet,
     addressString,
-    isGasStationAvailable,
     paymentInfo,
-    signTransaction,
-    error
+    signAndSubmitTransaction,
+    error,
+    walletType
   } = useWallet();
   
   const [message, setMessage] = useState('');
@@ -312,29 +312,34 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
       const transactionData: GasStationTransaction = {
         sender: addressString,
         content: message,
-        useGasStation: isGasStationAvailable,
-        walletType: isGasStationAvailable ? 'petra' : 'social',
+        useGasStation: true, // All transactions are now sponsored
+        walletType: walletType,
       };
 
-      // Create wrapper for transaction signing
-      const signTransactionWrapper = async (transaction: { transactionOrPayload: unknown }) => {
-        const result = await signTransaction({
-          transactionOrPayload: transaction.transactionOrPayload as never,
-        });
-        return { authenticator: result.authenticator };
-      };
+      const { Network } = await import('@aptos-labs/ts-sdk');
+      const { GasStationTransactionSubmitter } = await import('@aptos-labs/gas-station-client');
+      const { GAS_STATION_API_KEY } = await import('@/utils/constants');
 
-      await processMessageTransaction(transactionData, signTransactionWrapper);
-      
+      const transactionSubmitter = new GasStationTransactionSubmitter({
+        network: Network.TESTNET,
+        apiKey: GAS_STATION_API_KEY,
+      });
+
+      await processMessageTransaction(
+        transactionData,
+        signAndSubmitTransaction,
+        transactionSubmitter as unknown,
+      );
+
       // Success!
       setMessage('');
       setShowSuccess(true);
-      
+
       // Auto-refresh messages after successful posting
       setTimeout(() => {
         onMessagePosted(); // Refresh the messages
       }, 1000); // Wait 1 second for blockchain confirmation
-      
+
       // Hide success message after 5 seconds
       setTimeout(() => setShowSuccess(false), 5000);
 
@@ -363,7 +368,7 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
           
           <h3 className="text-xl font-bold text-white mb-2">🛣️ Highway Rest Stop</h3>
           <p className="text-blue-200 mb-4">
-            Connect your wallet to post a billboard message
+            Connect your wallet to post a billboard message on tippi&apos;s highway
           </p>
           
           {!showWalletOptions ? (
@@ -385,20 +390,20 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
               >
                 <span className="text-xl">🦊</span>
                 <div className="text-left">
-                  <div>Full Service - Petra Wallet</div>
-                  <div className="text-xs opacity-90">⛽ Free gas courtesy of station</div>
+                  <div>Petra Wallet</div>
+                  <div className="text-xs opacity-90">⛽ Sponsored gas on tippi&apos;s highway</div>
                 </div>
               </button>
-              
+
               <button
                 onClick={() => handleConnect('social')}
                 className="w-full text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center justify-center gap-3"
-                style={{ backgroundColor: HIGHWAY_COLORS.signRed }}
+                style={{ backgroundColor: HIGHWAY_COLORS.signBlue }}
               >
                 <span className="text-xl">🔗</span>
                 <div className="text-left">
-                  <div>Self Service - Google Login</div>
-                  <div className="text-xs opacity-90">💰 You pay for gas</div>
+                  <div>Google Login</div>
+                  <div className="text-xs opacity-90">⛽ Sponsored gas on tippi&apos;s highway</div>
                 </div>
               </button>
               
@@ -490,7 +495,7 @@ function PostBillboardSection({ onMessagePosted }: { onMessagePosted: () => void
                 </>
               ) : (
                 <>
-                  🚗 Post to Highway {isGasStationAvailable ? '(FREE GAS)' : '(YOU PAY GAS)'}
+                  🚗 Post to Tippi&apos;s Highway (FREE GAS)
                 </>
               )}
             </button>

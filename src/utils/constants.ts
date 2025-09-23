@@ -7,7 +7,11 @@ export const MODULE_NAME = "billboard";
 
 // API Keys - separate keys for different services
 export const INDEXER_API_KEY = process.env.NEXT_PUBLIC_INDEXER_API_KEY || "";
-export const GAS_STATION_API_KEY = process.env.NEXT_PUBLIC_GAS_STATION_API_KEY || "";
+// Support both legacy and current env var names for gas station key
+export const GAS_STATION_API_KEY =
+  process.env.NEXT_PUBLIC_GAS_STATION_API_KEY ||
+  process.env.NEXT_PUBLIC_APTOS_GAS_STATION_API_KEY ||
+  "";
 
 // Legacy API key for backward compatibility
 export const LEGACY_API_KEY = process.env.NEXT_PUBLIC_APTOS_API_KEY || "";

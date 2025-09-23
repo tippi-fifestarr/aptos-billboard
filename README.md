@@ -50,9 +50,9 @@ The same smart contract can power infinite creative frontends. Here are some ins
 ### 🚀 Production Ready (Phase 2 Complete)
 - **🎨 Highway-Themed UI** - Gorgeous interface using intuitive highway metaphors
 - **📱 Real-Time Data** - Live billboard updates via Aptos No-Code Indexer
-- **⛽ Gas Station Integration** - Sponsored transactions for Petra wallet users
+- **⛽ Gas Station Integration** - Sponsored transactions for Petra and Aptos Connect
 - **🔑 Social Login** - Google OAuth via Aptos Connect for seamless onboarding
-- **💰 Dual Payment System** - Petra gets free transactions, social login users pay normal fees
+- **💰 Sponsored for All** - Petra and Aptos Connect both post with 0 APT
 - **🚗 Interactive Gas Gauge** - Real balance display with connect buttons
 - **📍 Highway Rest Stop** - Fully functional gas station for wallet connections
 - **⭐ Auto-Refresh UX** - Seamless message posting with instant updates
@@ -92,10 +92,10 @@ The same smart contract can power infinite creative frontends. Here are some ins
 ### Frontend Stack
 - **Framework**: Next.js 15 with React 18
 - **Styling**: Tailwind CSS with highway color scheme
-- **Blockchain**: Aptos TypeScript SDK v1.39.0 (wallet adapter compatible)
-- **Wallet Integration**: @aptos-labs/wallet-adapter-react
+- **Blockchain**: Aptos TypeScript SDK ^3.1.3
+- **Wallet Integration**: @aptos-labs/wallet-adapter-react ^7.0.7
 - **Real-time Data**: GraphQL via No-Code Indexer
-- **Gas Station**: @aptos-labs/gas-station-client
+- **Gas Station**: @aptos-labs/gas-station-client ^2.0.3
 - **Dev Tools**: Turbopack for fast development
 
 ## 🚀 Quick Start
@@ -110,7 +110,7 @@ The same smart contract can power infinite creative frontends. Here are some ins
 1. **Clone the repository**
    ```bash
    git clone https://github.com/tippi-fifestarr/aptos-billboard
-   cd aptos-billboard/billboard-frontend
+   cd aptos-billboard
    ```
 
 2. **Install dependencies**
@@ -271,11 +271,24 @@ Smart Contract Event → Indexer Processing → GraphQL API → React UI
 User Action → Wallet Detection → Gas Station API → Sponsored Transaction
 ```
 
-### Implementation Details
-- **Petra Wallet**: Automatic sponsorship for all transactions
-- **Social Login**: Normal transactions (user pays gas fees)
-- **Rate Limiting**: Built-in protection against abuse
-- **Error Handling**: Graceful fallback to normal transactions
+### Implementation Details (Working Pattern)
+- Use `withFeePayer: true` on transactions
+- Cap gas to match your Gas Station rule, e.g. `options: { maxGasAmount: 50, gasUnitPrice: 100 }`
+- Pass a per-transaction `transactionSubmitter` (critical for Aptos Connect):
+  ```ts
+  const transactionSubmitter = new GasStationTransactionSubmitter({
+    network: Network.TESTNET,
+    apiKey: process.env.NEXT_PUBLIC_GAS_STATION_API_KEY!,
+  });
+  await signAndSubmitTransaction({
+    data: { /* your function */ },
+    withFeePayer: true,
+    options: { maxGasAmount: 50, gasUnitPrice: 100 },
+    transactionSubmitter,
+  });
+  ```
+- Prefer per-transaction submitter (we do not inject a provider-level submitter to avoid SSR/type collisions).
+- Support both env names: `NEXT_PUBLIC_GAS_STATION_API_KEY` or `NEXT_PUBLIC_APTOS_GAS_STATION_API_KEY`.
 
 ### Benefits for Users
 - **Zero Friction**: Petra users post messages for free
