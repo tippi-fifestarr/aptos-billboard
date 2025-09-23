@@ -1,5 +1,5 @@
 // src/lib/indexerClient.ts
-// Real-time billboard data from Aptos Build No-Code Indexer (GraphQL)
+// Real-time billboard data from Aptos Geomi No-Code Indexer (GraphQL)
 
 export interface IndexedMessage {
   author_address: string;

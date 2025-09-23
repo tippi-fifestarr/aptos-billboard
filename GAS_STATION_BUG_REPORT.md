@@ -92,7 +92,7 @@ const response = await signAndSubmitTransaction(transaction);
 ```
 
 ## Steps to Reproduce
-1. Set up gas station with API key from Aptos Build
+1. Set up gas station with API key from Aptos Geomi
 2. Configure `GasStationTransactionSubmitter` with proper network and API key
 3. Inject into `AptosWalletAdapterProvider` via `transactionSubmitter` property
 4. Submit transaction using `signAndSubmitTransaction` from wallet adapter

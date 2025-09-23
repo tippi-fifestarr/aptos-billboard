@@ -16,7 +16,7 @@ This project was **vibecoded** by [tippi fifestarr](https://github.com/tippi-fif
 - **🔐 Aptos Connect** - Social login integration (Google OAuth)
 - **🎨 Beautiful UX** - Highway metaphors make Web3 accessible to mainstream users
 
-The beauty of blockchain contracts is that **the UX is entirely up to you!** This same billboard contract could power completely different experiences. Want to build your own? Check out the [Vibe Coder to Aptos Guide](https://aptos-learn-git-tippi-vibe-test-deploy-aptoslabs.vercel.app/en/hackathon/vibe-coder-to-aptos-guide/introduction) for prompts and guidance to get started with Aptos development.
+The beauty of blockchain contracts is that **the UX is entirely up to you!** This same billboard contract could power completely different experiences. Want to build your own? Check out the [Vibe Coder to Aptos Guide](https://learn.aptoslabs.com/en/hackathon/vibe-coder-to-aptos-guide) for prompts and guidance to get started with Aptos development.
 
 ## 🌟 Fork This & Build Your Own Billboard dApp!
 
@@ -43,7 +43,7 @@ The same smart contract can power infinite creative frontends. Here are some ins
 - Synthwave aesthetics with glitch effects
 - Digital rain and cyberpunk styling
 
-**Ready to build your own?** Fork this repo and let your creativity run wild! The [Vibe Coder Guide](https://aptos-learn-git-tippi-vibe-test-deploy-aptoslabs.vercel.app/en/hackathon/vibe-coder-to-aptos-guide/introduction) has everything you need to get started.
+**Ready to build your own?** Fork this repo and let your creativity run wild! The [Vibe Coder Guide](https://learn.aptoslabs.com/en/hackathon/vibe-coder-to-aptos-guide) has everything you need to get started.
 
 ## ✨ Features
 
@@ -158,7 +158,7 @@ The same smart contract can power infinite creative frontends. Here are some ins
 
 ### Required API Keys
 
-You need **two separate API keys** from [Aptos Build](https://build.aptoslabs.com):
+You need **two separate API keys** from [Aptos Geomi](https://build.aptoslabs.com):
 
 1. **Indexer API Key** - For real-time data (GraphQL)
 2. **Gas Station API Key** - For transaction sponsorship
@@ -166,7 +166,7 @@ You need **two separate API keys** from [Aptos Build](https://build.aptoslabs.co
 ### Step-by-Step Configuration
 
 1. **Create Indexer Project**
-   - Go to [Aptos Build](https://build.aptoslabs.com)
+   - Go to [Aptos Geomi](https://build.aptoslabs.com)
    - Create a new "No-Code Indexer" project
    - Configure it to index your billboard contract events
    - Copy the GraphQL endpoint URL and API key
@@ -187,7 +187,7 @@ You need **two separate API keys** from [Aptos Build](https://build.aptoslabs.co
    NEXT_PUBLIC_GAS_STATION_API_KEY=aptoslabs_YOUR_GAS_STATION_KEY
    ```
 
-**Need help getting started?** The [Vibe Coder to Aptos Guide](https://aptos-learn-git-tippi-vibe-test-deploy-aptoslabs.vercel.app/en/hackathon/vibe-coder-to-aptos-guide/introduction) has detailed prompts and step-by-step instructions for Aptos development.
+**Need help getting started?** The [Vibe Coder to Aptos Guide](https://learn.aptoslabs.com/en/hackathon/vibe-coder-to-aptos-guide) has detailed prompts and step-by-step instructions for Aptos development.
 
 ## 🧪 Testing & Verification
 
@@ -239,7 +239,7 @@ NEXT_PUBLIC_GAS_STATION_API_KEY=aptoslabs_YOUR_GAS_STATION_KEY
 ### Production Considerations
 
 - **Network**: Ensure all components use Testnet
-- **CORS**: Aptos Build APIs are configured for frontend use
+- **CORS**: Aptos Geomi APIs are configured for frontend use
 - **Performance**: Next.js optimizations included for fast loading
 - **Error Handling**: Comprehensive error boundaries implemented
 
@@ -396,7 +396,7 @@ billboard-frontend/
 
 ## 🤝 Contributing
 
-We welcome contributions that improve the developer experience and showcase Aptos Build features!
+We welcome contributions that improve the developer experience and showcase Aptos Geomi features!
 
 ### Development Setup
 1. Fork the repository
@@ -412,18 +412,17 @@ We welcome contributions that improve the developer experience and showcase Apto
 
 ## 📖 Documentation
 
-- [Environment Setup Guide](./.env.example) - Complete configuration instructions
-- [API Keys Guide](./APTOS-API-KEYS-GUIDE.md) - Comprehensive guide to Aptos Build API keys
+- [Environment Setup](#environment-setup) - Complete configuration instructions in this README
 - [Gas Station Complete Guide](./GAS-STATION-COMPLETE-GUIDE.md) - Everything about implementing sponsored transactions
 - [Integration Plan](./integration-plan.md) - Technical implementation details
 - [Phase 1 Summary](./phase-1-summary.md) - Development journey pt 1
 - [Phase 2 Summary](./phase-2-summary.md) - Full integration completion
-- [Vibe Coder Guide](https://aptos-learn-git-tippi-vibe-test-deploy-aptoslabs.vercel.app/en/hackathon/vibe-coder-to-aptos-guide/introduction) - Get started building on Aptos
+- [Vibe Coder Guide](https://learn.aptoslabs.com/en/hackathon/vibe-coder-to-aptos-guide) - Get started building on Aptos
 
 ## 📞 Support & Contact
 
 **Project Creator**: [tippi fifestarr](https://github.com/tippi-fifestarr)  
-**Purpose**: Showcase Aptos Build ecosystem and inspire creative dApp development
+**Purpose**: Showcase Aptos Geomi ecosystem and inspire creative dApp development
 
 For technical questions or feedback:
 - Create GitHub issue with detailed description
@@ -447,4 +446,4 @@ Special thanks to:
 
 **Ready to drive the blockchain highway? Your gas tank is full! ⛽🚗💨**
 
-**Want to build your own billboard dApp?** Check out the [Vibe Coder to Aptos Guide](https://aptos-learn-git-tippi-vibe-test-deploy-aptoslabs.vercel.app/en/hackathon/vibe-coder-to-aptos-guide/introduction) and let your creativity run wild! 🚀
+**Want to build your own billboard dApp?** Check out the [Vibe Coder to Aptos Guide](https://learn.aptoslabs.com/en/hackathon/vibe-coder-to-aptos-guide) and let your creativity run wild! 🚀

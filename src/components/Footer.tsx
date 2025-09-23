@@ -36,7 +36,7 @@ export default function Footer() {
           </a>
           <span className="hidden md:inline text-white/40">•</span>
           <a 
-            href="https://aptos-learn-git-tippi-vibe-test-deploy-aptoslabs.vercel.app/en/hackathon/vibe-coder-to-aptos-guide/introduction" 
+            href="https://learn.aptoslabs.com/en/hackathon/vibe-coder-to-aptos-guide" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-green-300 hover:text-green-200 transition-colors text-sm"
@@ -45,7 +45,7 @@ export default function Footer() {
           </a>
         </div>
         <div className="mt-4 text-xs text-white/60">
-          <p>Showcasing Aptos Build ecosystem: No-Code Indexer • Gas Station • Aptos Connect</p>
+          <p>Showcasing Aptos Geomi ecosystem: No-Code Indexer • Gas Station • Aptos Connect</p>
         </div>
       </div>
     </footer>
