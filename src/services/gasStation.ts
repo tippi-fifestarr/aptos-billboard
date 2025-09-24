@@ -130,14 +130,13 @@ export async function processMessageTransaction(
         function: `${CONTRACT_ADDRESS}::${MODULE_NAME}::send_message`,
         functionArguments: [CONTRACT_ADDRESS, content],
       },
-      // Ensure Gas Station sponsorship and conform to configured limits
-      withFeePayer: true,
+      // Minimal working configuration: gas options + transactionSubmitter
+      // withFeePayer: true,  // ← NOT NEEDED (plugin system handles sponsorship)
       options: {
         maxGasAmount: 50,
         gasUnitPrice: 100,
       },
-      // Per-transaction submitter improves compatibility with social/keyless wallets
-      transactionSubmitter,
+      transactionSubmitter,  // ← ESSENTIAL for sponsorship
     } as unknown as InputTransactionData;
 
     const response = await signAndSubmitTransaction(transaction);
