@@ -48,3 +48,6 @@ next-env.d.ts
 
 # Local test workspace
 gastest/
+Aptos-NFT-generator/
+aptos-chess/
+test-aptos-dapp/
